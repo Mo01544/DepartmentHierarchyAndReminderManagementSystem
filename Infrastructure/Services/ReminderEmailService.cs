@@ -41,18 +41,23 @@ namespace DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Services
                 var reminders = await reminderService.GetAllReminders();
                 var upcomingReminders = reminders.Where(r => r.ReminderDateTime >= DateTime.Now && !r.EmailSent).ToList();
 
-                try
+                foreach (var reminder in upcomingReminders)
                 {
-                    string toEmail = "ahmed.morsi10@hotmail.com";
-                    string subject = "Test Email";
-                    string body = "This is a test email to verify the email sending functionality.";
-
-                    await emailService.SendEmailAsync(toEmail, subject, body);
-                    _logger.LogInformation("Test email sent successfully.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error sending test email.");
+                    try
+                    {
+                        await emailService.SendEmailAsync(reminder.Email, reminder.Title, $"Reminder: {reminder.Title}");
+                        reminder.EmailSent = true;
+                        await reminderService.UpdateReminder(reminder);
+                        _logger.LogInformation($"Sent reminder email for: {reminder.Title}");
+                    }
+                    catch (SmtpException smtpEx)
+                    {
+                        _logger.LogError(smtpEx, $"SMTP error sending email for reminder: {reminder.Title}");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, $"Error sending email for reminder: {reminder.Title}");
+                    }
                 }
             }
         }
