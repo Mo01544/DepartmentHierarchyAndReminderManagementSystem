@@ -5,22 +5,25 @@ using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Data;
 using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Repositories;
 using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Configure database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Register services and repositories
+builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-
 builder.Services.AddScoped<IReminderRepository, ReminderRepository>();
 builder.Services.AddScoped<IReminderService, ReminderService>();
 
-builder.Services.AddScoped<IEmailService, EmailService>();
+// Register hosted service for reminder emails
 builder.Services.AddHostedService<ReminderEmailService>();
 
 var app = builder.Build();

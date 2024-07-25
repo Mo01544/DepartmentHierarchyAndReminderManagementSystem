@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,19 +41,18 @@ namespace DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Services
                 var reminders = await reminderService.GetAllReminders();
                 var upcomingReminders = reminders.Where(r => r.ReminderDateTime >= DateTime.Now && !r.EmailSent).ToList();
 
-                foreach (var reminder in upcomingReminders)
+                try
                 {
-                    try
-                    {
-                        await emailService.SendEmailAsync("ahmed.abd-elazim.morsi@hotmail.com", reminder.Title, $"Reminder: {reminder.Title}");
-                        reminder.EmailSent = true;
-                        await reminderService.UpdateReminder(reminder);
-                        _logger.LogInformation($"Sent reminder email for: {reminder.Title}");
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, $"Error sending email for reminder: {reminder.Title}");
-                    }
+                    string toEmail = "ahmed.morsi10@hotmail.com";
+                    string subject = "Test Email";
+                    string body = "This is a test email to verify the email sending functionality.";
+
+                    await emailService.SendEmailAsync(toEmail, subject, body);
+                    _logger.LogInformation("Test email sent successfully.");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error sending test email.");
                 }
             }
         }
