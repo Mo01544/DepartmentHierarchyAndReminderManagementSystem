@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Department and Reminder Management System</h1>
+    <p>Select an option to manage:</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-primary btn-lg btn-block" href="@Url.Action("Index", "Department")">Manage Departments</a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-secondary btn-lg btn-block" href="@Url.Action("Index", "Reminder")">Manage Reminders</a>
+        </div>
+    </div>
+</div>
