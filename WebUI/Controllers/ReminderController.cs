@@ -28,7 +28,6 @@ namespace DepartmentHierarchyAndReminderManagementSystem.WebUI.Controllers
             {
                 return NotFound();
             }
-
             return View(reminder);
         }
 
@@ -56,7 +55,6 @@ namespace DepartmentHierarchyAndReminderManagementSystem.WebUI.Controllers
             {
                 return NotFound();
             }
-
             return View(reminder);
         }
 
@@ -91,23 +89,19 @@ namespace DepartmentHierarchyAndReminderManagementSystem.WebUI.Controllers
             return View(reminder);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var reminder = await _service.GetReminderById(id);
-            if (reminder == null)
+            try
             {
-                return NotFound();
+                await _service.DeleteReminder(id);
+                return Json(new { success = true, message = "Reminder deleted successfully." });
             }
-
-            return View(reminder);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _service.DeleteReminder(id);
-            return RedirectToAction(nameof(Index));
+            catch
+            {
+                return Json(new { success = false, message = "Error deleting reminder." });
+            }
         }
 
         private async Task<bool> ReminderExists(int id)

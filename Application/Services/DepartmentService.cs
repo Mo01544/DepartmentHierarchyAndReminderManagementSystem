@@ -1,6 +1,5 @@
 ﻿using DepartmentHierarchyAndReminderManagementSystem.Application.Interfaces;
 using DepartmentHierarchyAndReminderManagementSystem.Domain.Entities;
-using DepartmentHierarchyAndReminderManagementSystem.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,39 +14,29 @@ namespace DepartmentHierarchyAndReminderManagementSystem.Application.Services
             _repository = repository;
         }
 
-        public async Task<Department> GetDepartmentWithSubDepartments(int id)
+        public async Task<List<Department>> GetAllDepartments()
         {
-            return await _repository.GetDepartmentWithSubDepartments(id);
-        }
-
-        public async Task<IEnumerable<Department>> GetParentDepartments(int id)
-        {
-            return await _repository.GetParentDepartments(id);
-        }
-
-        public async Task<IEnumerable<Department>> GetAllDepartments()
-        {
-            return await _repository.GetAllDepartments();
+            return await _repository.GetAllDepartmentsAsync();
         }
 
         public async Task<Department> GetDepartmentById(int id)
         {
-            return await _repository.GetDepartmentById(id);
+            return await _repository.GetDepartmentByIdAsync(id);
         }
 
         public async Task AddDepartment(Department department)
         {
-            await _repository.AddDepartment(department);
+            await _repository.AddDepartmentAsync(department);
         }
 
         public async Task UpdateDepartment(Department department)
         {
-            await _repository.UpdateDepartment(department);
+            await _repository.UpdateDepartmentAsync(department);
         }
 
         public async Task DeleteDepartment(int id)
         {
-            await _repository.DeleteDepartment(id);
+            await _repository.DeleteDepartmentAsync(id);
         }
     }
 }

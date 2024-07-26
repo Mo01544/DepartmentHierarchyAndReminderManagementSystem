@@ -1,7 +1,10 @@
 ﻿@model DepartmentHierarchyAndReminderManagementSystem.Domain.Entities.Department
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{
     ViewData["Title"] = "Edit Department";
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
+    var departments = ViewBag.Departments as List<DepartmentHierarchyAndReminderManagementSystem.Domain.Entities.Department>;
 }
 
 <h1>Edit Department</h1>
@@ -20,6 +23,13 @@
                 <label asp-for="Logo" class="control-label"></label>
                 <input asp-for="Logo" class="form-control" />
                 <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentDepartmentId" class="control-label">Parent Department</label>
+                <select asp-for="ParentDepartmentId" class="form-control" asp-items="@(new SelectList(departments, "Id", "Name", Model.ParentDepartmentId))">
+                    <option value="">None</option>
+                </select>
+                <span asp-validation-for="ParentDepartmentId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

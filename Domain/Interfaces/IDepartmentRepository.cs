@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DepartmentHierarchyAndReminderManagementSystem.Domain.Interfaces
+namespace DepartmentHierarchyAndReminderManagementSystem.Application.Interfaces
 {
     public interface IDepartmentRepository
     {
-        Task<Department> GetDepartmentWithSubDepartments(int id);
-        Task<IEnumerable<Department>> GetParentDepartments(int id);
-        Task<IEnumerable<Department>> GetAllDepartments();
-        Task<Department> GetDepartmentById(int id);
-        Task AddDepartment(Department department);
-        Task UpdateDepartment(Department department);
-        Task DeleteDepartment(int id);
+        Task<List<Department>> GetAllDepartmentsAsync();
+        Task<Department> GetDepartmentByIdAsync(int id);
+        Task AddDepartmentAsync(Department department);
+        Task UpdateDepartmentAsync(Department department);
+        Task DeleteDepartmentAsync(int id);
     }
 }

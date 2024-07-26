@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DepartmentHierarchyAndReminderManagementSystem.Application.Interfaces;
 using DepartmentHierarchyAndReminderManagementSystem.Domain.Entities;
-using DepartmentHierarchyAndReminderManagementSystem.Domain.Interfaces;
 using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Repositories
@@ -17,50 +16,42 @@ namespace DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Reposito
             _context = context;
         }
 
-        public async Task<Department> GetDepartmentWithSubDepartments(int id)
+        public async Task<List<Department>> GetAllDepartmentsAsync()
         {
-            return await _context.Departments
-                .Include(d => d.SubDepartments)
-                .FirstOrDefaultAsync(d => d.Id == id);
+            return await _context.Departments.Include(d => d.SubDepartments).ToListAsync();
         }
 
-        public async Task<IEnumerable<Department>> GetParentDepartments(int id)
+        public async Task<Department> GetDepartmentByIdAsync(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
-            var parents = new List<Department>();
-
-            while (department?.ParentDepartmentId != null)
+            var department = await _context.Departments.Include(d => d.SubDepartments).FirstOrDefaultAsync(d => d.Id == id);
+            if (department != null && department.SubDepartments == null)
             {
-                department = await _context.Departments.FindAsync(department.ParentDepartmentId);
-                parents.Add(department);
+                department.SubDepartments = new List<Department>();
             }
-
-            return parents;
+            return department;
         }
 
-        public async Task<IEnumerable<Department>> GetAllDepartments()
+        public async Task AddDepartmentAsync(Department department)
         {
-            return await _context.Departments.ToListAsync();
-        }
-
-        public async Task<Department> GetDepartmentById(int id)
-        {
-            return await _context.Departments.FindAsync(id);
-        }
-
-        public async Task AddDepartment(Department department)
-        {
-            await _context.Departments.AddAsync(department);
+            if (department.SubDepartments == null)
+            {
+                department.SubDepartments = new List<Department>();
+            }
+            _context.Departments.Add(department);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateDepartment(Department department)
+        public async Task UpdateDepartmentAsync(Department department)
         {
-            _context.Departments.Update(department);
+            if (department.SubDepartments == null)
+            {
+                department.SubDepartments = new List<Department>();
+            }
+            _context.Entry(department).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteDepartment(int id)
+        public async Task DeleteDepartmentAsync(int id)
         {
             var department = await _context.Departments.FindAsync(id);
             if (department != null)

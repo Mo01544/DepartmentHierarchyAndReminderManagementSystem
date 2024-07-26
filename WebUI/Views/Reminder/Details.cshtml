@@ -17,10 +17,22 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ReminderDateTime)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ReminderDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
         </dd>
     </dl>
 </div>

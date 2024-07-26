@@ -6,9 +6,7 @@ namespace DepartmentHierarchyAndReminderManagementSystem.Application.Interfaces
 {
     public interface IDepartmentService
     {
-        Task<Department> GetDepartmentWithSubDepartments(int id);
-        Task<IEnumerable<Department>> GetParentDepartments(int id);
-        Task<IEnumerable<Department>> GetAllDepartments();
+        Task<List<Department>> GetAllDepartments();
         Task<Department> GetDepartmentById(int id);
         Task AddDepartment(Department department);
         Task UpdateDepartment(Department department);

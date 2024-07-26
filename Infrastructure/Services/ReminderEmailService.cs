@@ -45,7 +45,7 @@ namespace DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Services
                 {
                     try
                     {
-                        await emailService.SendEmailAsync(reminder.Email, reminder.Title, $"Reminder: {reminder.Title}");
+                        await emailService.SendEmailAsync(reminder.Email, reminder.Subject, $"Reminder: {reminder.Title}");
                         reminder.EmailSent = true;
                         await reminderService.UpdateReminder(reminder);
                         _logger.LogInformation($"Sent reminder email for: {reminder.Title}");

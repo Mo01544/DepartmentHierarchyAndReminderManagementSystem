@@ -1,42 +1,81 @@
 ﻿@model IEnumerable<DepartmentHierarchyAndReminderManagementSystem.Domain.Entities.Reminder>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{
     ViewData["Title"] = "Reminders";
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
 }
 
 <h1>Reminders</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New Reminder</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReminderDateTime)
-            </th>
+            <th>Title</th>
+            <th>Subject</th>
+            <th>Reminder DateTime</th>
+            <th>Email</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="reminder-@item.Id">
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ReminderDateTime)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                    <form asp-action="Delete" method="post" onsubmit="return deleteReminder(event, @item.Id)" style="display:inline;">
+                        <input type="hidden" name="__RequestVerificationToken" value="@tokens.RequestToken" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function deleteReminder(event, id) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to delete this reminder?')) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Reminder")/' + id,
+                    type: 'POST',
+                    data: {
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            $('#reminder-' + id).remove();
+                            alert(result.message);
+                        } else {
+                            alert(result.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('An error occurred while deleting the reminder.');
+                    }
+                });
+            }
+        }
+    </script>
+}
