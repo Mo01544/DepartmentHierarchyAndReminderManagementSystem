@@ -1,5 +1,5 @@
-﻿using DepartmentHierarchyAndReminderManagementSystem.Application.Interfaces;
-using DepartmentHierarchyAndReminderManagementSystem.Domain.Entities;
+﻿using DepartmentHierarchyAndReminderManagementSystem.Domain.Entities;
+using DepartmentHierarchyAndReminderManagementSystem.Domain.Interfaces;
 using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

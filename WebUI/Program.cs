@@ -5,7 +5,6 @@ using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Data;
 using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Repositories;
 using DepartmentHierarchyAndReminderManagementSystem.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

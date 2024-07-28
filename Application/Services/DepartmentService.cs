@@ -1,5 +1,6 @@
 ﻿using DepartmentHierarchyAndReminderManagementSystem.Application.Interfaces;
 using DepartmentHierarchyAndReminderManagementSystem.Domain.Entities;
+using DepartmentHierarchyAndReminderManagementSystem.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

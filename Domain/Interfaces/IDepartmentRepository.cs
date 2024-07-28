@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DepartmentHierarchyAndReminderManagementSystem.Application.Interfaces
+namespace DepartmentHierarchyAndReminderManagementSystem.Domain.Interfaces
 {
     public interface IDepartmentRepository
     {
